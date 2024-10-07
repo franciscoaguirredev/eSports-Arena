@@ -4,6 +4,7 @@ import { UpdatePlayerDto } from './dto/update-player.dto';
 import { Player } from './entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PlayersService {
@@ -13,7 +14,13 @@ export class PlayersService {
   ) {}
 
   async create(createPlayer: CreatePlayerDto): Promise<Player> {
-    const player = this.playerRepository.create(createPlayer);
+
+    const {password, ...playerData} = createPlayer
+    const player = await this.playerRepository.create({
+      ...playerData,
+      password: bcrypt.hashSync(password, 10)
+    })
+    await this.playerRepository.save(player)
     return await this.playerRepository.save(player);
   }
 
