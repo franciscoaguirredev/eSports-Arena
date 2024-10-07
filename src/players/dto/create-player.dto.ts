@@ -3,7 +3,6 @@ import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "cl
 export class CreatePlayerDto {
 
     @IsNotEmpty()
-    @IsEmail()
     @MinLength(6)
     @MaxLength(255)
     name:string

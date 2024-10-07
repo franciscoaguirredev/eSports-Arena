@@ -1,20 +1,19 @@
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator"
 
 export class UpdatePlayerDto {
 
-    @IsNotEmpty()
-    @IsEmail()
+    @IsOptional()
     @MinLength(6)
     @MaxLength(255)
     name?:string
     
-    @IsNotEmpty()
+    @IsOptional()
     @IsEmail()
     @MinLength(6)
     @MaxLength(255)
     email?:string
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     @MinLength(6)
     @MaxLength(255)
