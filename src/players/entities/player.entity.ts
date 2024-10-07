@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Participant } from "src/participants/entities/participant.entity";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -17,15 +18,7 @@ export class Player {
     @Column('varchar', { length: 255, select: false, nullable: false })
     password:string
 
-
-    @BeforeInsert()
-    checkFieldsBeforeInsert(){
-        this.email = this.email.toLowerCase().trim();
-    }
-
-    @BeforeUpdate()
-    checkFieldsBeforeUpdate(){
-        this.checkFieldsBeforeInsert()
-    }
+    @OneToMany(()=>Participant,(participant)=>participant.player, {nullable:false})
+    participants:Participant
 
 }
