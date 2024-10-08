@@ -8,9 +8,9 @@ export default class CreatePlayers implements Seeder {
     const playerRepository = dataSource.getRepository(Player);
 
     const playersData = [
-      { name: 'Hugo', email: "hugo@gmail.com", password: "qwer1234*" },
-      { name: 'Paco', email: "paco@gmail.com", password: "qwer1234*" },
-      { name: 'Luis', email: "luis@gmail.com", password: "qwer1234*" },
+      { name: 'Hugo', email: "hugo@gmail.com", password: "Qwer1234*" },
+      { name: 'Paco', email: "paco@gmail.com", password: "Qwer1234*" },
+      { name: 'Luis', email: "luis@gmail.com", password: "Qwer1234*" },
     ];
 
     for (const player of playersData) {

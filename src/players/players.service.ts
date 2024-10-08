@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { Player } from './entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { handleError } from 'src/common/utils/response.util';
+import { handleError, handleResponse } from 'src/common/utils/response.util';
 
 @Injectable()
 export class PlayersService {
@@ -28,8 +28,13 @@ export class PlayersService {
 
   }
 
-  async findAll(): Promise<Player[]> {
-    return await this.playerRepository.find();
+  async findAll(): Promise<any> {
+    try {
+      const data = await this.playerRepository.find();
+      return handleResponse(data, 'Players found successfully', HttpStatus.OK)
+    } catch (error) {
+      handleError(error, 'Failed to find players')
+    }
   }
 
   async findOne(id: number): Promise<Player> {
