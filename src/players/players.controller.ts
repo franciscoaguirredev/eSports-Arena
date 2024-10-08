@@ -3,7 +3,10 @@ import { PlayersService } from './players.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Players')
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @Controller('players')
 export class PlayersController {
