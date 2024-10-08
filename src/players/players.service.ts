@@ -37,22 +37,41 @@ export class PlayersService {
     }
   }
 
-  async findOne(id: number): Promise<Player> {
-    const player = await this.playerRepository.findOne({ where: { id } });
-    if (!player) {
-      throw new NotFoundException(`Player with ID ${id} not found`);
+  async findOne(id: number): Promise<any> {
+    try {
+      const player = await this.playerRepository.findOne({ where: { id } });
+      if (!player) {
+        throw new NotFoundException(`Player with ID ${id} not found`);
+      }
+      return handleResponse(player, 'Player found successfully', HttpStatus.OK)
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handleError(error, 'Failed to find Player')
     }
-    return player;
   }
 
-  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<Player> {
-    const player = await this.findOne(id);
-    Object.assign(player, updatePlayerDto);
-    return await this.playerRepository.save(player);
+  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<any> {
+    try {
+      const player = await this.playerRepository.findOne({ where: { id } });
+      if (!player) {
+        throw new NotFoundException(`Player with ID ${id} not found`);
+      }
+      Object.assign(player, updatePlayerDto);
+      const updatedPlayer = await this.playerRepository.save(player);
+      return handleResponse(updatedPlayer, 'Player updated successfully', HttpStatus.OK)
+    } catch (error) {
+            if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handleError(error, 'Failed to update Player')
+    }
   }
 
-  async remove(id: number): Promise<void> {
-    const player = await this.findOne(id);
+  async remove(id: number): Promise<any> {
+    const player = await this.playerRepository.findOne({ where: { id } });
     await this.playerRepository.remove(player);
+    return handleResponse(null, 'Player deleted successfully', HttpStatus.OK);
   }
 }
