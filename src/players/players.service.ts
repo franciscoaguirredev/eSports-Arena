@@ -5,6 +5,7 @@ import { Player } from './entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { handleError } from 'src/common/utils/response.util';
 
 @Injectable()
 export class PlayersService {
@@ -14,14 +15,17 @@ export class PlayersService {
   ) {}
 
   async create(createPlayer: CreatePlayerDto): Promise<Player> {
+    try {
+      const {password, ...playerData} = createPlayer
+      const player = await this.playerRepository.create({
+        ...playerData,
+        password: bcrypt.hashSync(password, 10)
+      })
+      return await this.playerRepository.save(player);
+    } catch (error) {
+      handleError(error, 'Failed to create Player')
+    }
 
-    const {password, ...playerData} = createPlayer
-    const player = await this.playerRepository.create({
-      ...playerData,
-      password: bcrypt.hashSync(password, 10)
-    })
-    await this.playerRepository.save(player)
-    return await this.playerRepository.save(player);
   }
 
   async findAll(): Promise<Player[]> {

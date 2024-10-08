@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
@@ -8,6 +8,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { Player } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
 import { CreatePlayerDto } from 'src/players/dto/create-player.dto';
+import { handleError, handleResponse } from 'src/common/utils/response.util';
 
 
 @Injectable()
@@ -23,7 +24,7 @@ export class AuthService {
         try {
           const findUser = await this.playerRepository.findOne({where: {email:createPlayer.email}})
           if(findUser){
-              return "Email alredy exists"
+            return "Email alredy exists"
           }
 
           const player = await this.playerService.create(createPlayer)
@@ -36,13 +37,12 @@ export class AuthService {
             id: player.id
           }
 
-          return {
-            ...player,
-            token:this.getJwtToken(payload)
-        }
+          const token = this.getJwtToken(payload)
+            const data = {...player,token}
+          return handleResponse(data, 'Player created successfully', HttpStatus.CREATED)
+        
         } catch (error) {
-          return `Error creating User ${error}`
-          
+          handleError(error, 'Failed to create player');
         }
     };
 
