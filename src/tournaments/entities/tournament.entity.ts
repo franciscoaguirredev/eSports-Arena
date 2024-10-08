@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Participant } from 'src/participants/entities/participant.entity';
 import { Match } from 'src/matches/entities/match.entity';
-// import { Match } from './match.entity';
 
 @Entity()
 export class Tournament {
@@ -21,7 +20,7 @@ export class Tournament {
   endDate: Date;
 
   @Column('varchar', { length: 50, nullable: false })
-  status: string; // (e.g., "in progress", "finished")
+  status: string; 
 
   @OneToMany(() => Participant, (participant) => participant.tournament)
   participants: Participant[];
