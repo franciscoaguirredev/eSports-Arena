@@ -3,6 +3,7 @@ import { TournamentsService } from './tournaments.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { IHandleError, IHandleRespose } from 'src/common/utils/response.interface';
 
 @ApiTags('Tournaments')
 @ApiBearerAuth()
@@ -16,22 +17,22 @@ export class TournamentsController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<IHandleRespose | IHandleError> {
     return this.tournamentsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<IHandleRespose | IHandleError> {
     return this.tournamentsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTournamentDto: UpdateTournamentDto) {
-    return this.tournamentsService.update(+id, updateTournamentDto);
-  }
+//   @Patch(':id')
+//   update(@Param('id') id: string, @Body() updateTournamentDto: UpdateTournamentDto) {
+//     return this.tournamentsService.update(+id, updateTournamentDto);
+//   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tournamentsService.remove(+id);
-  }
+//   @Delete(':id')
+//   remove(@Param('id') id: string) {
+//     return this.tournamentsService.remove(+id);
+//   }
 }

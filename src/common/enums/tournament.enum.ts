@@ -4,5 +4,6 @@ export enum statusTournament {
     ONGOING = "Ongoing",
     PAUSED = "Paused",
     POSTPOSNED = "Postponed",
-    FINISHED = "Finished"
+    FINISHED = "Finished",
+    UPCOMING = "Upcoming"
 }

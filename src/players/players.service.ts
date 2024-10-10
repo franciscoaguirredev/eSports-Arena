@@ -31,7 +31,7 @@ export class PlayersService {
   async findAll(): Promise<any> {
     try {
       const data = await this.playerRepository.find();
-      return handleResponse(data, 'Players found successfully', HttpStatus.OK)
+      return handleResponse(HttpStatus.OK,'Players found successfully', data)
     } catch (error) {
       handleError(error, 'Failed to find players')
     }
@@ -43,7 +43,7 @@ export class PlayersService {
       if (!player) {
         throw new NotFoundException(`Player with ID ${id} not found`);
       }
-      return handleResponse(player, 'Player found successfully', HttpStatus.OK)
+      return handleResponse(HttpStatus.OK, 'Player found successfully',player)
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
@@ -60,7 +60,7 @@ export class PlayersService {
       }
       Object.assign(player, updatePlayerDto);
       const updatedPlayer = await this.playerRepository.save(player);
-      return handleResponse(updatedPlayer, 'Player updated successfully', HttpStatus.OK)
+      return handleResponse(HttpStatus.OK,'Player updated successfully',updatedPlayer )
     } catch (error) {
             if (error instanceof NotFoundException) {
         throw error;

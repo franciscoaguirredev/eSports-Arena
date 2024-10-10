@@ -26,7 +26,6 @@ export class AuthService {
           if(findUser){
             return "Email alredy exists"
           }
-
           const player = await this.playerService.create(createPlayer)
 
           delete player.password
@@ -39,8 +38,7 @@ export class AuthService {
 
           const token = this.getJwtToken(payload)
             const data = {...player,token}
-          return handleResponse(data, 'Player created successfully', HttpStatus.CREATED)
-        
+          return handleResponse(HttpStatus.CREATED,'Player created successfully', data)
         } catch (error) {
           handleError(error, 'Failed to create player');
         }
